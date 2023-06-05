@@ -1,61 +1,56 @@
 import { observer } from 'mobx-react';
+import { useState } from 'react';
 import { Navigate } from 'react-router';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 
-interface IProp {
-  isLoggedIn: boolean;
+interface IPropStore {
+    isLoggedIn: boolean;
+}
+interface IPropCurrencies{
+    loading: boolean;
+    pairs: Array<string>;
+    errorMessage: string;
+    fetchCurrencies: () => void
 }
 interface IProps {
-  store: IProp;
+    store: IPropStore;
+    currencies: IPropCurrencies;
 }
 interface ITableComponent {
-  symbol: string;
-  bidPrice: string;
-  askPrice: string;
+    symbol: string;
+    bidPrice: string;
+    askPrice: string;
 }
 
 const CurrenciesPage = observer((props: IProps) => {
-  const [cur, setCur] = useState([]);
-  useEffect(() => {
-    axios
-      .get('https://www.binance.com/api/v3/ticker/24hr')
-      .then((response) => {
-        setCur(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [setCur]);
-  return (
-    <div className="container_page">
-      {props.store.isLoggedIn ? null : <Navigate to="/" />}
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <h3>Symbol</h3>
-            </td>
-            <td>
-              <h3>Bid Price</h3>
-            </td>
-            <td>
-              <h3>Ask Price</h3>
-            </td>
-          </tr>
-          {cur.map((elem: ITableComponent) => {
-            return (
-              <tr key={elem.symbol}>
-                <td>{elem.symbol}</td>
-                <td>{elem.bidPrice}</td>
-                <td>{elem.askPrice}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
+    return (
+        <div className="container_page">
+            {props.store.isLoggedIn ? null : <Navigate to="/" />}
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h3>Symbol</h3>
+                        </td>
+                        <td>
+                            <h3>Bid Price</h3>
+                        </td>
+                        <td>
+                            <h3>Ask Price</h3>
+                        </td>
+                    </tr>
+                    {/* {props.currencies.pairs.map((elem: ITableComponent) => {
+                        return (
+                            <tr key={elem.symbol}>
+                                <td>{elem.symbol}</td>
+                                <td>{elem.bidPrice}</td>
+                                <td>{elem.askPrice}</td>
+                            </tr>
+                        );
+                    })} */}
+                </tbody>
+            </table>
+        </div>
+    );
 });
 
 export default CurrenciesPage;

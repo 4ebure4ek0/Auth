@@ -4,6 +4,7 @@ import authStore from './stores/authStore';
 import { Routes, Route, Link } from 'react-router-dom';
 import CurrenciesPage from './pages/CurrenciesPage';
 import { type ReactElement } from 'react';
+import currenciesStore from './stores/currenciesStore';
 
 function App(): ReactElement {
   return (
@@ -19,7 +20,10 @@ function App(): ReactElement {
       <Routes>
         <Route path="/" element={<AuthPage store={authStore} />} />
         <Route path="/profile" element={<ProfilePage store={authStore} />} />
-        <Route path="currencies" element={<CurrenciesPage store={authStore} />} />
+        <Route
+          path="currencies"
+          element={<CurrenciesPage store={authStore} currencies={currenciesStore} />}
+        />
       </Routes>
     </div>
   );
