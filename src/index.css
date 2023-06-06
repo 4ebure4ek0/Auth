@@ -60,6 +60,31 @@ header{
 .form{
     text-align: center;
 }
+.loading {
+    width: 75px;
+    height: 75px;
+    border: 10px solid #ffffff96;
+    border-radius: 50%;
+    border-top-color: #89237e;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    animation: 2s spin infinite linear;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+.loading_img{
+    height: 50px;
+    animation: load 2s linear infinite;
+}
 table{
     background-color: rgb(199, 122, 122);
     margin: 10% 23%;

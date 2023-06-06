@@ -5,27 +5,23 @@ import { Routes, Route, Link } from 'react-router-dom';
 import CurrenciesPage from './pages/CurrenciesPage';
 import { type ReactElement } from 'react';
 import currenciesStore from './stores/currenciesStore';
+import productsStore from './stores/productsStore';
+import ProductsPage from './pages/ProductsPage';
+import Layout from './components/layout';
 
 function App(): ReactElement {
   return (
-    <div className="container">
-      <header>
-        <Link className="menu_bar" to="/profile">
-          Profile
-        </Link>
-        <Link className="menu_bar" to="currencies">
-          Currencies
-        </Link>
-      </header>
-      <Routes>
+    <Routes>
+      <Route path='/' element={<Layout />}>
         <Route path="/" element={<AuthPage store={authStore} />} />
         <Route path="/profile" element={<ProfilePage store={authStore} />} />
         <Route
           path="currencies"
           element={<CurrenciesPage store={authStore} currencies={currenciesStore} />}
         />
-      </Routes>
-    </div>
+        <Route path="/products" element={<ProductsPage store={authStore} products={productsStore}/>} />
+      </Route>
+    </Routes>
   );
 }
 

@@ -25,11 +25,12 @@ class CurrenciesStore {
 
   @action onFetchSuccess(response: any): void {
     this.pairs = response.data;
-    this.loading = !this.loading;
+    this.loading = false;
   }
 
   @action onFetchError(error: string): void {
     this.errorMessage = error;
+    this.loading = false;
   }
 }
 
