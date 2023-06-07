@@ -1,5 +1,5 @@
-export default interface Iuser{
-    username?: string
-    password?: string
-    firstname?: string
+export default interface Iuser {
+  username?: string;
+  password?: string;
+  firstname?: string;
 }

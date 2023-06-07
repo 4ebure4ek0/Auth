@@ -3,9 +3,9 @@ import { action, makeObservable, observable } from 'mobx';
 
 class ProductsStore {
   @observable loading: boolean = true;
-  @observable products: Array<string> = [];
+  @observable products: string[] = [];
   @observable errorMessage: string = '';
-  @observable pageNum = 0
+  @observable pageNum = 0;
   constructor() {
     makeObservable(this);
     this.fetchProducts = this.fetchProducts.bind(this);

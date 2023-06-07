@@ -9,17 +9,17 @@ function SignIn(props: any): ReactElement {
       <p>
         Create a username:
         <br />
-        <input type="text" name="username" onChange={props.onChange} />
+        <input type="text" name="username" onChange={props.onChangeUsername} />
       </p>
       <p>
         Create a password:
         <br />
-        <input type="text" name="password" onChange={props.onChange} />
+        <input type="text" name="password" onChange={props.onChangePassword} />
       </p>
       <p>
         Enter your firstname:
         <br />
-        <input type="text" name="firstname" onChange={props.onChange} />
+        <input type="text" name="firstname" onChange={props.onChangeFirstname} />
       </p>
       <br />
       <input type="button" value="Sign in" onClick={props.onSubmit} />

@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 
 class CurrenciesStore {
   @observable loading: boolean = true;
-  @observable pairs: Array<string> = [];
+  @observable pairs: string[] = [];
   @observable errorMessage: string = '';
   constructor() {
     makeObservable(this);

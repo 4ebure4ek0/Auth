@@ -16,7 +16,9 @@ class AuthStore {
   @observable isLoggedIn: boolean = false;
   constructor() {
     this.changeIsRegistered = this.changeIsRegistered.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeUsername = this.handleChangeUsername.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleChangeFirstname = this.handleChangeFirstname.bind(this);
     this.getUsersFromStorage = this.getUsersFromStorage.bind(this);
     this.getUserFromStorageByUsername = this.getUserFromStorageByUsername.bind(this);
     this.addUserToStorage = this.addUserToStorage.bind(this);
@@ -30,15 +32,19 @@ class AuthStore {
     this.isRegistered = !this.isRegistered;
   }
 
-  @action handleChange(event: React.KeyboardEvent<HTMLInputElement> | any): void {
+  @action handleChangeUsername(event: React.KeyboardEvent<HTMLInputElement> | any): void {
     const value = event.target.value;
-    const name = event.target.name;
-    if (name === 'username') {
-      this.username = value;
-    }
-    if (name === 'password') {
-      this.password = value;
-    } else this.firstname = value;
+    this.username = value;
+  }
+
+  @action handleChangePassword(event: React.KeyboardEvent<HTMLInputElement> | any): void {
+    const value = event.target.value;
+    this.password = value;
+  }
+
+  @action handleChangeFirstname(event: React.KeyboardEvent<HTMLInputElement> | any): void {
+    const value = event.target.value;
+    this.firstname = value;
   }
 
   @action getUsersFromStorage(): string | string[][] | null {
@@ -58,31 +64,27 @@ class AuthStore {
   }
 
   @action addUserToStorage(users: any): null {
-    if (this.username === '' || this.password === '' || this.firstname === '') {
-      this.error = 'Fill in the fields';
-      console.log(this.error);
-      return null;
-    } else {
-      const user = {
-        username: this.username,
-        password: this.password,
-        firstname: this.firstname
-      };
-      users.push(user);
-      localStorage.setItem('users', JSON.stringify(users));
-      return null;
-    }
+    const user = {
+      username: this.username,
+      password: this.password,
+      firstname: this.firstname
+    };
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+    return null;
     // localStorage.clear()
   }
 
   @action handleSubmitSignIn(): void {
     const users = this.getUsersFromStorage();
     const userCheck = this.getUserFromStorageByUsername(users);
-    if (userCheck === undefined) {
-      this.addUserToStorage(users);
-      this.isLoggedIn = true;
-    } else {
+    if (this.username === '' || this.password === '' || this.firstname === '') {
+      this.error = 'Fill in the fields';
+    } else if (userCheck !== undefined) {
       this.error = 'This username is already taken';
+    } else {
+      this.addUserToStorage(users);
+        this.isLoggedIn = true;
     }
   }
 

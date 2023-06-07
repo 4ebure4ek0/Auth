@@ -1,20 +1,18 @@
 interface IPropStore {
-    isLoggedIn: boolean;
+  isLoggedIn: boolean;
 }
 interface IProps {
-    store: IPropStore;
-    products: IPropProducts
+  store: IPropStore;
+  products: IPropProducts;
 }
 interface IPropProducts {
-    loading: boolean;
-    products: Array<string>;
-    errorMessage: string;
-    fetchProducts: () => void
+  loading: boolean;
+  products: string[];
+  errorMessage: string;
+  fetchProducts: () => void;
 }
-const ProductsPage = (props:IProps) => {
-    return(
-        <div>hello</div>
-    )
-}
+const ProductsPage = (props: IProps) => {
+  return <div>hello</div>;
+};
 
-export default ProductsPage
+export default ProductsPage;
