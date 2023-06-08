@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import { Navigate } from 'react-router';
 import { useEffect } from 'react';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 interface IPropStore {
   isLoggedIn: boolean;
@@ -27,33 +28,37 @@ const CurrenciesPage = observer((props: IProps) => {
     );
   } else {
     return (
-      <div className="container_page">
+      <TableContainer component={Paper} sx={{
+        marginTop: 10
+      }}>
         {props.store.isLoggedIn ? null : <Navigate to="/" />}
-        <table>
-          <tbody>
-            <tr>
-              <td>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>
                 <h3>Symbol</h3>
-              </td>
-              <td>
+              </TableCell>
+              <TableCell>
                 <h3>Bid Price</h3>
-              </td>
-              <td>
+              </TableCell>
+              <TableCell>
                 <h3>Ask Price</h3>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {props.currencies.pairs.map((pair: any) => {
               return (
-                <tr key={pair.symbol}>
-                  <td>{pair.symbol}</td>
-                  <td>{pair.bidPrice}</td>
-                  <td>{pair.askPrice}</td>
-                </tr>
+                <TableRow key={pair.symbol}>
+                  <TableCell>{pair.symbol}</TableCell>
+                  <TableCell>{pair.bidPrice}</TableCell>
+                  <TableCell>{pair.askPrice}</TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   }
 });

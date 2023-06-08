@@ -25,6 +25,7 @@ const AuthPage = observer((props: IProps): ReactElement => {
       {props.store.isLoggedIn ? <Navigate to="/profile" /> : null}
       {props.store.isRegistered ? (
         <LoginForm
+          onChangeLog={props.store.changeIsRegistered}
           onChangeUsername={props.store.handleChangeUsername}
           onChangePassword={props.store.handleChangePassword}
           onSubmit={props.store.handleSubmitLogIn}
@@ -32,6 +33,7 @@ const AuthPage = observer((props: IProps): ReactElement => {
         />
       ) : (
         <SigninForm
+          onChangeLog={props.store.changeIsRegistered}
           onChangeUsername={props.store.handleChangeUsername}
           onChangePassword={props.store.handleChangePassword}
           onChangeFirstname={props.store.handleChangeFirstname}
@@ -39,11 +41,7 @@ const AuthPage = observer((props: IProps): ReactElement => {
           error={props.store.error}
         />
       )}
-      <input
-        type="button"
-        onClick={props.store.changeIsRegistered}
-        value={props.store.isRegistered ? "I'm not registered" : "I'm registered"}
-      />
+      {/* <input onClick={props.store.changeIsRegistered} value={props.store.isRegistered ? "I'm not registered" : "I'm registered"}/> */}
     </div>
   );
 });

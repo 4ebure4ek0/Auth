@@ -1,24 +1,22 @@
+import { Box, Button, TextField } from '@mui/material';
 import Error from './Error';
 import { type ReactElement } from 'react';
 
 function LogIn(props: any): ReactElement {
   return (
-    <form>
+    <Box sx={{
+      width: 300,
+      height: 300,
+      display: 'grid',
+      gap: 2,
+      paddingTop: 30
+    }}>
       <Error error={props.error} />
-      <br />
-      <p>
-        Enter your username:
-        <br />
-        <input type="text" name="username" onChange={props.onChangeUsername} />
-      </p>
-      <p>
-        Enter your password:
-        <br />
-        <input type="text" name="password" onChange={props.onChangePassword} />
-      </p>
-      <br />
-      <input type="button" value="Log in" onClick={props.onSubmit} />
-    </form>
+      <TextField label='username' variant="outlined" type="text" name="username" onChange={props.onChangeUsername} />
+      <TextField label='password' variant="outlined" type="password" name="password" onChange={props.onChangePassword} />
+      <Button variant='contained' onClick={props.onSubmit}>Log in</Button>
+      <Button variant="text" onClick={props.onChangeLog}>I'm not registered</Button>
+    </Box>
   );
 }
 

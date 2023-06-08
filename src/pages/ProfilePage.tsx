@@ -1,3 +1,4 @@
+import { Avatar, Button, Container, List, ListItemText } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { type MouseEventHandler, type ReactElement } from 'react';
 import { Navigate } from 'react-router';
@@ -6,7 +7,7 @@ interface IProp {
   isLoggedIn: boolean;
   username: string;
   firstname: string;
-  handleLogOut: MouseEventHandler<HTMLInputElement>;
+  handleLogOut: any;
 }
 interface IProps {
   store: IProp;
@@ -14,15 +15,15 @@ interface IProps {
 
 const ProfilePage = observer((props: IProps): ReactElement => {
   return (
-    <div className="container_page">
+    <Container>
       {props.store.isLoggedIn ? null : <Navigate to="/" />}
-      <img src="./img_person.jpg" alt="person" />
+      <Avatar src="./img_person.jpg" alt="person" sx={{width: 100, height: 100}}/>
       <h1>Hello {props.store.firstname}</h1>
-      <ul>
-        <li>Your login is: {props.store.username}</li>
-      </ul>
-      <input type="button" onClick={props.store.handleLogOut} value="Log out" />
-    </div>
+      <List>
+        <ListItemText>Your login is: {props.store.username}</ListItemText>
+      </List>
+      <Button variant="contained" onClick={props.store.handleLogOut}>Log out</Button>
+    </Container>
   );
 });
 
