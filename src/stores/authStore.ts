@@ -1,4 +1,3 @@
-import type React from 'react';
 import { action, makeObservable, observable } from 'mobx';
 
 interface IUser {
@@ -32,19 +31,16 @@ class AuthStore {
     this.isRegistered = !this.isRegistered;
   }
 
-  @action handleChangeUsername(event: React.KeyboardEvent<HTMLInputElement> | any): void {
-    const value = event.target.value;
-    this.username = value;
+  @action handleChangeUsername(username:string): void {
+    this.username = username;
   }
 
-  @action handleChangePassword(event: React.KeyboardEvent<HTMLInputElement> | any): void {
-    const value = event.target.value;
-    this.password = value;
+  @action handleChangePassword(password:string): void {
+    this.password = password;
   }
 
-  @action handleChangeFirstname(event: React.KeyboardEvent<HTMLInputElement> | any): void {
-    const value = event.target.value;
-    this.firstname = value;
+  @action handleChangeFirstname(firstname:string): void {
+    this.firstname = firstname;
   }
 
   @action getUsersFromStorage(): string | string[][] | null {

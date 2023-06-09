@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import { Navigate } from 'react-router';
 import { useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import Error from '../components/Error';
 
 interface IPropStore {
   isLoggedIn: boolean;
@@ -22,9 +23,13 @@ const CurrenciesPage = observer((props: IProps) => {
   }, []);
   if (props.currencies.loading) {
     return (
-      <div className="container_page">
-        <div className="loading"></div>
-      </div>
+      <Box sx={{
+        height: 700,
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+        <CircularProgress />
+      </Box>
     );
   } else {
     return (
@@ -32,6 +37,7 @@ const CurrenciesPage = observer((props: IProps) => {
         marginTop: 10
       }}>
         {props.store.isLoggedIn ? null : <Navigate to="/" />}
+        {props.currencies.errorMessage == ''? null : <Error error = {props.currencies.errorMessage} />}
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>

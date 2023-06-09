@@ -12,8 +12,8 @@ function LogIn(props: any): ReactElement {
       paddingTop: 30
     }}>
       <Error error={props.error} />
-      <TextField label='username' variant="outlined" type="text" name="username" onChange={props.onChangeUsername} />
-      <TextField label='password' variant="outlined" type="password" name="password" onChange={props.onChangePassword} />
+      <TextField label='username' variant="outlined" type="text" name="username" onChange={(e) => props.onChangeUsername(e.target.value)} />
+      <TextField label='password' variant="outlined" type="password" name="password" onChange={(e) => props.onChangePassword(e.target.value)}/>
       <Button variant='contained' onClick={props.onSubmit}>Log in</Button>
       <Button variant="text" onClick={props.onChangeLog}>I'm not registered</Button>
     </Box>

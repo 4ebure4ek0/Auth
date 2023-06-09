@@ -15,9 +15,12 @@ interface IProps {
 
 const ProfilePage = observer((props: IProps): ReactElement => {
   return (
-    <Container>
+    <Container sx={{
+      paddingTop: 20,
+      textAlign: 'center'
+    }}>
       {props.store.isLoggedIn ? null : <Navigate to="/" />}
-      <Avatar src="./img_person.jpg" alt="person" sx={{width: 100, height: 100}}/>
+      <Avatar src="./img_person.jpg" alt="person" sx={{width: 300, height: 300}}/>
       <h1>Hello {props.store.firstname}</h1>
       <List>
         <ListItemText>Your login is: {props.store.username}</ListItemText>
