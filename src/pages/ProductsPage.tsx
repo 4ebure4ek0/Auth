@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react';
 import { Navigate } from 'react-router';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
 import Error from '../components/Error';
+import Product from '../components/product';
 
 interface IPropStore {
   isLoggedIn: boolean;
@@ -16,13 +17,16 @@ interface IPropProducts {
   products: string[];
   errorMessage: string;
   search: string;
+  pageNum: number;
   fetchProducts: () => void;
   handleChangeSearch: (search:string) => void;
+  handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
 }
-const ProductsPage = observer((props: IProps) => {
+const ProductsPage:React.FC<IProps> = observer((props) => {
   useEffect(() => {
     props.products.fetchProducts();
-  }, []);
+  }, [props.products.pageNum]);
+
   if (props.products.loading) {
     return (
       <Box sx={{
@@ -44,7 +48,7 @@ const ProductsPage = observer((props: IProps) => {
         <TableContainer component={Paper} sx={{
           width: 1500
         }}>
-          {props.products.errorMessage == '' ? null : <Error error={props.products.errorMessage} />}
+          {props.products.errorMessage.length ? null : <Error error={props.products.errorMessage} />}
           {props.store.isLoggedIn ? null : <Navigate to="/" />}
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
@@ -81,24 +85,19 @@ const ProductsPage = observer((props: IProps) => {
             <TableBody>
               {props.products.products.map((product: any) => {
                 return (
-                  <TableRow key={product.id}>
-                    <TableCell>{product.title}</TableCell>
-                    <TableCell>{product.description}</TableCell>
-                    <TableCell>{product.price}</TableCell>
-                    <TableCell>{product.rating}</TableCell>
-                    <TableCell>{product.stock}</TableCell>
-                    <TableCell>{product.brand}</TableCell>
-                    <TableCell>{product.category}</TableCell>
-                    <TableCell>{product.thumbnail}</TableCell>
-                    <TableCell>{product.images}</TableCell>
-                  </TableRow>
+                  <Product product={product} />
                 );
               })}
             </TableBody>
           </Table>
           <TableFooter>
             <TableRow>
-              <TablePagination></TablePagination>
+              <TablePagination
+                count={100}
+                page={props.products.pageNum}
+                rowsPerPage={props.products.products.length}
+                onPageChange={props.products.handleChangePage}
+              ></TablePagination>
             </TableRow>
           </TableFooter>
         </TableContainer>

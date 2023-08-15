@@ -17,7 +17,7 @@ interface IProps {
   store: IPropStore;
   currencies: IPropCurrencies;
 }
-const CurrenciesPage = observer((props: IProps) => {
+const CurrenciesPage:React.FC<IProps> = observer((props) => {
   useEffect(() => {
     props.currencies.fetchCurrencies();
   }, []);
@@ -37,7 +37,7 @@ const CurrenciesPage = observer((props: IProps) => {
         marginTop: 10
       }}>
         {props.store.isLoggedIn ? null : <Navigate to="/" />}
-        {props.currencies.errorMessage == ''? null : <Error error = {props.currencies.errorMessage} />}
+        {props.currencies.errorMessage.length? null : <Error error = {props.currencies.errorMessage} />}
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
@@ -70,3 +70,6 @@ const CurrenciesPage = observer((props: IProps) => {
 });
 
 export default CurrenciesPage;
+
+
+

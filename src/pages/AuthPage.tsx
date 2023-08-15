@@ -7,9 +7,9 @@ import { type ReactElement, type MouseEventHandler } from 'react';
 interface IProp {
   isLoggedIn: boolean;
   isRegistered: boolean;
-  handleChangeUsername: (event: any) => void;
-  handleChangePassword: (event: any) => void;
-  handleChangeFirstname: (event: any) => void;
+  handleChangeUsername: (Username:string) => void;
+  handleChangePassword: (Password:string) => void;
+  handleChangeFirstname: (Firstname:string) => void;
   handleSubmitLogIn: () => void;
   handleSubmitSignIn: () => void;
   error: string;
@@ -19,7 +19,7 @@ interface IProps {
   store: IProp;
 }
 
-const AuthPage = observer((props: IProps): ReactElement => {
+const AuthPage:React.FC<IProps> = observer((props): ReactElement => {
   return (
     <div className="container_auth_page">
       {props.store.isLoggedIn ? <Navigate to="/profile" /> : null}
@@ -41,7 +41,6 @@ const AuthPage = observer((props: IProps): ReactElement => {
           error={props.store.error}
         />
       )}
-      {/* <input onClick={props.store.changeIsRegistered} value={props.store.isRegistered ? "I'm not registered" : "I'm registered"}/> */}
     </div>
   );
 });

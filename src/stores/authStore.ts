@@ -6,6 +6,8 @@ interface IUser {
   firstname: string;
 }
 
+type Users =  string[][] | null
+
 class AuthStore {
   @observable username: string = '';
   @observable password: string = '';
@@ -43,8 +45,8 @@ class AuthStore {
     this.firstname = firstname;
   }
 
-  @action getUsersFromStorage(): string | string[][] | null {
-    let users: string | string[][] | null = localStorage.getItem('users');
+  @action getUsersFromStorage(): Users | string{
+    let users: Users | string= localStorage.getItem('users');
     if (users === null) {
       users = [];
     } else {
@@ -53,10 +55,11 @@ class AuthStore {
     return users;
   }
 
-  @action getUserFromStorageByUsername(users: any): IUser {
-    const user = users.find((u: any) => u.username === this.username);
-    console.log(user);
-    return user;
+  @action getUserFromStorageByUsername(users: any): any {
+    if(users !== null){
+      const user = users.find((u: any) => u.username === this.username);
+      return user;
+    }
   }
 
   @action addUserToStorage(users: any): null {

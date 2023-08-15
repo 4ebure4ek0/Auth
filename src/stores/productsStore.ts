@@ -12,15 +12,16 @@ class ProductsStore {
     this.fetchProducts = this.fetchProducts.bind(this);
     this.onFetchSuccess = this.onFetchSuccess.bind(this);
     this.onFetchError = this.onFetchError.bind(this);
-    this.goNextPage = this.goNextPage.bind(this);
-    this.goBackPage = this.goBackPage.bind(this);
+    // this.goNextPage = this.goNextPage.bind(this);
+    // this.goBackPage = this.goBackPage.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this)
+    // this.handleChangePage = this.handleChangePage.bind(this)
   }
 
   @action fetchProducts(): void {
     if(this.search == ''){
       axios
-      .get(`https://dummyjson.com/products?limit=30&skip=${this.pageNum * 30}`)
+      .get(`https://dummyjson.com/products?limit=25&skip=${this.pageNum * 25}`)
       .then((response) => {
         this.onFetchSuccess(response);
       })
@@ -49,16 +50,20 @@ class ProductsStore {
     this.loading = false;
   }
 
-  @action goNextPage():void{
-    this.pageNum += 30
-  }
-  @action goBackPage(): void | null{
-    if(this.pageNum !== 0){
-      this.pageNum -= 30
-    } else {
-      return null
-    }
-  }
+  // @action goNextPage():void{
+  //   this.pageNum += 30
+  // }
+  // @action goBackPage(): void | null{
+  //   if(this.pageNum !== 0){
+  //     this.pageNum -= 30
+  //   } else {
+  //     return null
+  //   }
+  // }
+  @action handleChangePage (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
+    this.pageNum = newPage
+    console.log(this.pageNum)
+  };
   @action handleChangeSearch(search:string):void{
     this.search = search
     this.fetchProducts()
