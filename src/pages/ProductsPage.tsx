@@ -19,14 +19,16 @@ interface IPropProducts {
   search: string;
   pageNum: number;
   total: number;
+  pageQuantity: number;
   fetchProducts: () => void;
-  handleChangeSearch: (search:string) => void;
+  handleChangeSearch: (search: string) => void;
   handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  handleChangeQuantity: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
-const ProductsPage:React.FC<IProps> = observer((props) => {
+const ProductsPage: React.FC<IProps> = observer((props) => {
   useEffect(() => {
     props.products.fetchProducts();
-  }, [props.products.pageNum]);
+  }, [props.products.pageNum, props.products.pageQuantity]);
 
   if (props.products.loading) {
     return (
@@ -55,6 +57,9 @@ const ProductsPage:React.FC<IProps> = observer((props) => {
             <TableHead>
               <TableRow>
                 <TableCell>
+                  <h3>Thumbnail</h3>
+                </TableCell>
+                <TableCell>
                   <h3>Title</h3>
                 </TableCell>
                 <TableCell>
@@ -75,32 +80,27 @@ const ProductsPage:React.FC<IProps> = observer((props) => {
                 <TableCell>
                   <h3>Category</h3>
                 </TableCell>
-                <TableCell>
-                  <h3>Thumbnail</h3>
-                </TableCell>
-                <TableCell>
-                  <h3>Images</h3>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.products.products.map((product: any) => {
+              {props.products.products.map((product: any, n: number) => {
                 return (
-                  <Product product={product} />
+                  <Product product={product} key={n} />
                 );
               })}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={props.products.total}
+                  page={props.products.pageNum}
+                  rowsPerPage={props.products.pageQuantity}
+                  onPageChange={props.products.handleChangePage}
+                  onRowsPerPageChange={props.products.handleChangeQuantity}
+                ></TablePagination>
+              </TableRow>
+            </TableFooter>
           </Table>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={props.products.total}
-                page={props.products.pageNum}
-                rowsPerPage={props.products.products.length}
-                onPageChange={props.products.handleChangePage}
-              ></TablePagination>
-            </TableRow>
-          </TableFooter>
         </TableContainer>
       </>
     );

@@ -7,22 +7,20 @@ class ProductsStore {
   @observable total: number = 0;
   @observable errorMessage: string = '';
   @observable pageNum = 0;
+  @observable pageQuantity = 10
   @observable search = ''
   constructor() {
     makeObservable(this);
     this.fetchProducts = this.fetchProducts.bind(this);
     this.onFetchSuccess = this.onFetchSuccess.bind(this);
     this.onFetchError = this.onFetchError.bind(this);
-    // this.goNextPage = this.goNextPage.bind(this);
-    // this.goBackPage = this.goBackPage.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this)
-    // this.handleChangePage = this.handleChangePage.bind(this)
   }
 
   @action fetchProducts(): void {
     if(this.search == ''){
       axios
-      .get(`https://dummyjson.com/products?limit=25&skip=${this.pageNum * 25}`)
+      .get(`https://dummyjson.com/products?limit=${this.pageQuantity}&skip=${this.pageNum * this.pageQuantity}`)
       .then((response) => {
         this.onFetchSuccess(response);
       })
@@ -51,21 +49,13 @@ class ProductsStore {
     this.errorMessage = error;
     this.loading = false;
   }
-
-  // @action goNextPage():void{
-  //   this.pageNum += 30
-  // }
-  // @action goBackPage(): void | null{
-  //   if(this.pageNum !== 0){
-  //     this.pageNum -= 30
-  //   } else {
-  //     return null
-  //   }
-  // }
   @action.bound handleChangePage (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
     this.pageNum = newPage
-    this.fetchProducts()
   };
+  @action.bound handleChangeQuantity(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
+    this.pageQuantity = parseInt(event.target.value, 10)
+    this.pageNum = 0
+  }
   @action handleChangeSearch(search:string):void{
     this.search = search
     this.fetchProducts()
