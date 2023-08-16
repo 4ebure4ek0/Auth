@@ -4,6 +4,7 @@ import { action, makeObservable, observable } from 'mobx';
 class ProductsStore {
   @observable loading: boolean = true;
   @observable products: any = [];
+  @observable total: number = 0;
   @observable errorMessage: string = '';
   @observable pageNum = 0;
   @observable search = ''
@@ -42,6 +43,7 @@ class ProductsStore {
 
   @action onFetchSuccess(response: any): void {
     this.products = response.data.products;
+    this.total = response.data.total;
     this.loading = false;
   }
 
@@ -60,9 +62,9 @@ class ProductsStore {
   //     return null
   //   }
   // }
-  @action handleChangePage (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
+  @action.bound handleChangePage (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
     this.pageNum = newPage
-    console.log(this.pageNum)
+    this.fetchProducts()
   };
   @action handleChangeSearch(search:string):void{
     this.search = search

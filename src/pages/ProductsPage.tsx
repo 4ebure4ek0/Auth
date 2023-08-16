@@ -18,6 +18,7 @@ interface IPropProducts {
   errorMessage: string;
   search: string;
   pageNum: number;
+  total: number;
   fetchProducts: () => void;
   handleChangeSearch: (search:string) => void;
   handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
@@ -93,7 +94,7 @@ const ProductsPage:React.FC<IProps> = observer((props) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                count={100}
+                count={props.products.total}
                 page={props.products.pageNum}
                 rowsPerPage={props.products.products.length}
                 onPageChange={props.products.handleChangePage}
