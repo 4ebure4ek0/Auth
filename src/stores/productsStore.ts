@@ -63,8 +63,7 @@ class ProductsStore {
   //   }
   // }
   @action.bound handleChangePage (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
-    this.pageNum = newPage
-    this.fetchProducts()
+    this.pageNum = newPage;
   };
   @action handleChangeSearch(search:string):void{
     this.search = search
