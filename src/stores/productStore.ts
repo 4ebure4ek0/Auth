@@ -1,9 +1,21 @@
 import axios from 'axios';
 import { action, makeObservable, observable } from 'mobx';
 
+interface IProduct{
+  thumbnail: string;
+  title: string;
+  description: string;
+  category: string;
+  brand: string;
+  price: string;
+  rating: string;
+  stock: string;
+  images: Array<string>;
+}
+
 class ProductsStore {
   @observable loading: boolean = true;
-  @observable product: Array<string> | {} = {};
+  @observable product: IProduct | undefined;
   @observable errorMessage: string = '';
   constructor() {
     makeObservable(this);
@@ -13,6 +25,7 @@ class ProductsStore {
   }
 
   @action fetchProduct(id:string): void {
+    this.loading = true;
     axios
     .get(`https://dummyjson.com/products/${id}`)
     .then((response) => {
@@ -34,5 +47,5 @@ class ProductsStore {
   }
 }
 
-const productsStore = new ProductsStore();
-export default productsStore;
+const productStore = new ProductsStore();
+export default productStore;

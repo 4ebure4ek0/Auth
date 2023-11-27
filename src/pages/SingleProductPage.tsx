@@ -3,26 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router"
 import Error from "../components/Error";
 import ReactSimpleImageViewer from "react-simple-image-viewer";
+import { observer } from "mobx-react";
+import productStore from "../stores/productStore";
 
-// interface IProduct {
-//   title: string;
-//   thumbnail: string;
-//   description: string;
-//   id
-// }
-
-interface IPropProduct {
-    loading: boolean;
-    product: Array<string> | {} | any;
-    errorMessage: string;
-    fetchProduct: (id:string) => void;
-  }
-
-interface IProps {
-    product: IPropProduct;
-  }
-
-const SingleProductPage = (props:IProps) => {
+const SingleProductPage = observer(() => {
     let {id}: any = useParams()
     const [curImg, setCurImg] = useState(0)
     const [isViewerOpen, setIsViewerOpen] = useState(false)
@@ -35,11 +19,10 @@ const SingleProductPage = (props:IProps) => {
     }
 
     useEffect(() => {
-        props.product.fetchProduct(id);
-        console.log(props.product.loading)
+        productStore.fetchProduct(id)
     }, [])
 
-    if (props.product.loading) {
+    if (productStore.loading) {
       return (
         <Box sx={{
           height: 700,
@@ -49,55 +32,57 @@ const SingleProductPage = (props:IProps) => {
           <CircularProgress />
         </Box>
       );
-    } else{
+    } else if(!!productStore.product){
       return(
         <Box>
           <Grid container spacing={2}>
-          {props.product.errorMessage.length ? null : <Error error={props.product.errorMessage} />}
+          {productStore.errorMessage.length ? null : <Error error={productStore.errorMessage} />}
           <Grid item xs={7}>
-            <img src={props.product.product.thumbnail} alt={props.product.product.title} onClick={() => toggleViewer(curImg)}/>
+            <img src={productStore.product.thumbnail} alt={productStore.product.title} onClick={() => toggleViewer(curImg)}/>
           </Grid>
           <Grid item xs={2}>
           <Table sx={{ minWidth: 650 }}>
             <TableBody>
               <TableRow>
                 <TableCell>Title:</TableCell>
-                <TableCell>{props.product.product.title}</TableCell>
+                <TableCell>{productStore.product.title}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Description:</TableCell>
-                <TableCell>{props.product.product.description}</TableCell>
+                <TableCell>{productStore.product.description}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Category:</TableCell>
-                <TableCell>{props.product.product.category}</TableCell>
+                <TableCell>{productStore.product.category}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Brand:</TableCell>
-                <TableCell>{props.product.product.brand}</TableCell>
+                <TableCell>{productStore.product.brand}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Price:</TableCell>
-                <TableCell>{props.product.product.price}</TableCell>
+                <TableCell>{productStore.product.price}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Rating:</TableCell>
-                <TableCell>{props.product.product.rating}</TableCell>
+                <TableCell>{productStore.product.rating}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Stock:</TableCell>
-                <TableCell>{props.product.product.stock}</TableCell>
+                <TableCell>{productStore.product.stock}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
           </Grid>
         </Grid>
         {isViewerOpen &&
-            <ReactSimpleImageViewer src={props.product.product.images} currentIndex={curImg} onClose={toggleViewer} closeOnClickOutside={true} />
+            <ReactSimpleImageViewer src={productStore.product.images} currentIndex={curImg} onClose={toggleViewer} closeOnClickOutside={true} />
         }
         </Box>
         )
+    } else{
+      return null
     }
-}
+})
 
 export default SingleProductPage

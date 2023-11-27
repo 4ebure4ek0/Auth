@@ -22,8 +22,8 @@ interface IProps {
 export default function Product(props: IProps) {
   return (
     <>
-      <TableRow key={props.product.id} sx={{ cursor: "pointer" }}>
-        <Link to={`./${props.product.id}`}>
+      <Link to={`./${props.product.id}`} style={{textDecoration: 'none'}}>
+        <TableRow key={props.product.id} sx={{ cursor: "pointer"}}>
           <TableCell>
             <img
               style={{ width: "300px" }}
@@ -35,8 +35,8 @@ export default function Product(props: IProps) {
           <TableCell>{props.product.price}</TableCell>
           <TableCell>{props.product.brand}</TableCell>
           <TableCell>{props.product.category}</TableCell>
-        </Link>
-      </TableRow>
+        </TableRow>
+      </Link>
     </>
   );
 }

@@ -27,7 +27,7 @@ function App(): ReactElement {
         />
         <Route
           path="products/:id"
-          element={<SingleProductPage product={productStore} />}
+          element={<SingleProductPage />}
         />
       </Route>
     </Routes>

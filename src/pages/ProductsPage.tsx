@@ -59,7 +59,7 @@ const ProductsPage: React.FC<IProps> = observer((props) => {
   } else {
     return (
       <>
-        <Grid container spacing={2} justifyContent="space-between" alignItems="center" sx={{
+        <Grid container spacing={1} justifyContent="space-between" alignItems="center" sx={{
           paddingTop: 2,
           paddingBottom: 2
         }}>
@@ -111,12 +111,10 @@ const ProductsPage: React.FC<IProps> = observer((props) => {
             <Button variant="contained" sx={{width: '100%'}} onClick={() => props.products.addProduct(newProduct)}>Send</Button>
           </Box>
         </Modal>
-        <TableContainer component={Paper} sx={{
-          width: 1500
-        }}>
+        <TableContainer component={Paper} sx={{ minWidth: 1050 }}>
           {props.products.errorMessage.length ? null : <Error error={props.products.errorMessage} />}
           {/* {props.store.isLoggedIn ? null : <Navigate to="/" />} */}
-          <Table sx={{ minWidth: 650 }}>
+          <Table sx={{ minWidth: 1050 }}>
             <TableHead>
               <TableRow>
                 <TableCell>
