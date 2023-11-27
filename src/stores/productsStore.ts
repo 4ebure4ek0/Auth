@@ -3,6 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 
 class ProductsStore {
   @observable loading: boolean = true;
+  @observable addStatus:boolean = false;
   @observable products: any = [];
   @observable total: number = 0;
   @observable errorMessage: string = '';
@@ -12,6 +13,8 @@ class ProductsStore {
   constructor() {
     makeObservable(this);
     this.fetchProducts = this.fetchProducts.bind(this);
+    this.setAddStatus = this.setAddStatus.bind(this)
+    this.addProduct = this.addProduct.bind(this)
     this.onFetchSuccess = this.onFetchSuccess.bind(this);
     this.onFetchError = this.onFetchError.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this)
@@ -59,6 +62,22 @@ class ProductsStore {
   @action handleChangeSearch(search:string):void{
     this.search = search
     this.fetchProducts()
+  }
+
+  @action setAddStatus(status:boolean){
+    this.addStatus = status
+  }
+
+  @action addProduct(product:Array<string> | {}){
+    axios
+    .post(`https://dummyjson.com/products/add`, product)
+    .then((response) => {
+      if(response.status == 200)
+        this.setAddStatus(true)
+    })
+    .catch((err) => {
+      this.onFetchError(err);
+    });
   }
 }
 

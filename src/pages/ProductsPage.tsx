@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import { Navigate } from 'react-router';
 import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
 import Error from '../components/Error';
 import Product from '../components/product';
 
@@ -13,6 +13,7 @@ interface IProps {
   products: IPropProducts;
 }
 interface IPropProducts {
+  addStatus: boolean;
   loading: boolean;
   products: string[];
   errorMessage: string;
@@ -20,15 +21,30 @@ interface IPropProducts {
   pageNum: number;
   total: number;
   pageQuantity: number;
+  setAddStatus: (status:boolean) => void;
   fetchProducts: () => void;
+  addProduct: (product: Array<string> | 
+    {}) => void | number;
   handleChangeSearch: (search: string) => void;
   handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
   handleChangeQuantity: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 const ProductsPage: React.FC<IProps> = observer((props) => {
+  let [newProduct, setNewProduct] = useState({})
+  let [openModal, setOpenModal] = useState(false)
+
+  const addNewProduct = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setNewProduct({...newProduct, [e.target.name]: e.target.value})
+  }
+
   useEffect(() => {
     props.products.fetchProducts();
   }, [props.products.pageNum, props.products.pageQuantity]);
+
+  useEffect(() => {
+    props.products.setAddStatus(false)
+    setOpenModal(false)
+  }, [props.products.addStatus])
 
   if (props.products.loading) {
     return (
@@ -43,16 +59,63 @@ const ProductsPage: React.FC<IProps> = observer((props) => {
   } else {
     return (
       <>
-        <TextField label="Search..." variant="filled" onChange={(e) => props.products.handleChangeSearch(e.target.value)} sx={{
-          marginTop: 5,
-          marginBottom: 5,
-          width: 1500
-        }} />
+        <Grid container spacing={2} justifyContent="space-between" alignItems="center" sx={{
+          paddingTop: 2,
+          paddingBottom: 2
+        }}>
+          <Grid item xs={10}>
+            <TextField label="Search..." variant="filled" onChange={(e) => props.products.handleChangeSearch(e.target.value)} sx={{
+              width: '100%',
+              height: 60,
+            }} />
+          </Grid>
+          <Grid item xs={2}>
+            <Button onClick={() => setOpenModal(!openModal)} variant="outlined" sx={{
+              width: "100%",
+              height: 60
+            }}>
+              Add product
+            </Button>
+          </Grid>
+        </Grid>
+        <Modal
+          open={openModal}
+          onClose={() => setOpenModal(!openModal)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Box sx={{
+            bgcolor: '#fff',
+            width: 400,
+            p: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2
+          }}>
+            <TextField id="standard-basic" label="Title" name='title' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Description" name='Description' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Price" type='number' name='Price' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Rating" type='number' name='Rating' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Stock" type='number' name='Stock' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Brand" name='Brand' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Category" name='Category' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="Thumbnail" type='file' name='Thumbnail' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <TextField id="standard-basic" label="images" type='file' name='images' variant="standard" sx={{width: '100%'}} onChange={(e) => addNewProduct(e)}/>
+            <Button variant="contained" sx={{width: '100%'}} onClick={() => props.products.addProduct(newProduct)}>Send</Button>
+          </Box>
+        </Modal>
         <TableContainer component={Paper} sx={{
           width: 1500
         }}>
           {props.products.errorMessage.length ? null : <Error error={props.products.errorMessage} />}
-          {props.store.isLoggedIn ? null : <Navigate to="/" />}
+          {/* {props.store.isLoggedIn ? null : <Navigate to="/" />} */}
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
@@ -63,16 +126,7 @@ const ProductsPage: React.FC<IProps> = observer((props) => {
                   <h3>Title</h3>
                 </TableCell>
                 <TableCell>
-                  <h3>Description</h3>
-                </TableCell>
-                <TableCell>
                   <h3>Price</h3>
-                </TableCell>
-                <TableCell>
-                  <h3>Rating</h3>
-                </TableCell>
-                <TableCell>
-                  <h3>Stock</h3>
                 </TableCell>
                 <TableCell>
                   <h3>Brand</h3>
@@ -85,7 +139,7 @@ const ProductsPage: React.FC<IProps> = observer((props) => {
             <TableBody>
               {props.products.products.map((product: any, n: number) => {
                 return (
-                  <Product product={product} key={n} />
+                  <Product product={product} />
                 );
               })}
             </TableBody>

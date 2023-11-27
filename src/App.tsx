@@ -8,6 +8,8 @@ import currenciesStore from './stores/currenciesStore';
 import productsStore from './stores/productsStore';
 import ProductsPage from './pages/ProductsPage';
 import Layout from './components/layout';
+import SingleProductPage from './pages/SingleProductPage';
+import productStore from './stores/productStore';
 
 function App(): ReactElement {
   return (
@@ -20,8 +22,12 @@ function App(): ReactElement {
           element={<CurrenciesPage store={authStore} currencies={currenciesStore} />}
         />
         <Route
-          path="/products"
+          path="products"
           element={<ProductsPage store={authStore} products={productsStore} />}
+        />
+        <Route
+          path="products/:id"
+          element={<SingleProductPage product={productStore} />}
         />
       </Route>
     </Routes>
